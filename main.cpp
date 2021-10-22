@@ -17,10 +17,17 @@ class AmayaEngine {
 		}
 
 	private:
+		//misc stuff
+		const char* ENGINE_NAME = "AmayaEngine";
+		const char* APP_NAME = "Test App";
+
+		//glfw stuff
 		const uint32_t WIN_WIDTH = 800;
 		const uint32_t WIN_HEIGHT = 600;
-
 		GLFWwindow* window;
+
+		//vulkan stuff
+		VkInstance instance;
 
 		void initWindow() {
 			glfwInit();
@@ -28,10 +35,39 @@ class AmayaEngine {
 			glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 			glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-			window = glfwCreateWindow(WIN_WIDTH, WIN_HEIGHT, "AmayaEngine", nullptr, nullptr);
+			window = glfwCreateWindow(WIN_WIDTH, WIN_HEIGHT, ENGINE_NAME, nullptr, nullptr);
 		}
 
 		void initVulkan() {
+			createInstance();
+		}
+
+		void createInstance() {
+			VkApplicationInfo appInfo{};
+			appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+			appInfo.pApplicationName = APP_NAME;
+			appInfo.applicationVersion = VK_MAKE_VERSION(1,0,0);
+			appInfo.pEngineName = ENGINE_NAME;
+			appInfo.engineVersion = VK_MAKE_VERSION(1,0,0);
+			appInfo.apiVersion = VK_API_VERSION_1_0;
+			
+			VkInstanceCreateInfo createInfo{};
+			createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+			createInfo.pApplicationInfo = &appInfo;
+
+			uint32_t glfwExtensionCount = 0;
+			const char** glfwExtensions;
+
+			glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+
+			createInfo.enabledExtensionCount = glfwExtensionCount;
+			createInfo.ppEnabledExtensionNames = glfwExtensions;
+			createInfo.enabledLayerCount = 0;
+
+			//unsurpressable warning, please ignore
+			if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
+				throw std::runtime_error("failed to create Vulkan instance");
+			}
 		}
 
 		void mainLoop() {

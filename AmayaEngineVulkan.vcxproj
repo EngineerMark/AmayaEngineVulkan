@@ -156,10 +156,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AmayaEngine.cpp" />
+    <ClCompile Include="AmayaVulkan.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AmayaEngine.h" />
+    <ClInclude Include="AmayaVulkan.h" />
     <ClInclude Include="QueueFamilyIndices.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

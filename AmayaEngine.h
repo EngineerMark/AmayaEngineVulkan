@@ -10,6 +10,8 @@
 #include <cstdlib>
 #include <vector>
 
+#include "QueueFamilyIndices.h"
+
 class AmayaEngine {
 public:
 	void run();
@@ -48,6 +50,7 @@ private:
 	void populateDebugMessenger(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 	std::vector<const char*> getRequiredExtensions();
 	bool checkValidationLayerSupport();
+	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 	void mainLoop();
 	void cleanup();
 	VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);

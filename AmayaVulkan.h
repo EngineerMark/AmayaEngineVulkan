@@ -14,6 +14,7 @@
 
 #include <cstdint>
 #include <algorithm>
+#include "AmayaFile.h"
 
 class AmayaVulkan
 {
@@ -37,6 +38,8 @@ class AmayaVulkan
 		uint32_t WIN_WIDTH = 800;
 		uint32_t WIN_HEIGHT = 600;
 
+		AmayaFile* fileSystem;
+
 		GLFWwindow* window;
 
 		VkInstance instance;
@@ -51,6 +54,7 @@ class AmayaVulkan
 		VkExtent2D swapChainExtent;
 
 		std::vector<VkImage> swapChainImages;
+		std::vector<VkImageView> swapChainImageViews;
 
 		const std::vector<const char*> validationLayers = {
 			"VK_LAYER_KHRONOS_validation"
@@ -73,14 +77,20 @@ class AmayaVulkan
 		void pickPhysicalDevice();
 		void createLogicalDevice();
 		void createSwapChain();
+		void createImageViews();
+		void createGraphicsPipeline();
 		bool isDeviceSuitable(VkPhysicalDevice device);
+
 		SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
 		VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
 		VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
 		VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+		VkShaderModule createShaderModule(const std::vector<char>& code);
+
 		bool checkDeviceExtensionSupport(VkPhysicalDevice device);
 		void populateDebugMessenger(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 		bool checkValidationLayerSupport();
+
 		QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 
 		std::vector<const char*> getRequiredExtensions();

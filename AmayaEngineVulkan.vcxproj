@@ -161,9 +161,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AmayaEngine.h" />
+    <ClInclude Include="AmayaFile.h" />
     <ClInclude Include="AmayaVulkan.h" />
     <ClInclude Include="QueueFamilyIndices.h" />
     <ClInclude Include="SwapChainSupportDetails.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\frag.spv">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="Shaders\vert.spv">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

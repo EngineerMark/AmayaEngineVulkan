@@ -12,6 +12,9 @@
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
 
+#include <cstdint>
+#include <algorithm>
+
 class AmayaVulkan
 {
 	public:
@@ -66,6 +69,9 @@ class AmayaVulkan
 		void createLogicalDevice();
 		bool isDeviceSuitable(VkPhysicalDevice device);
 		SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
+		VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+		VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+		VkExtent2D chooseSwapExtend(const VkSurfaceCapabilitiesKHR& capabilities);
 		bool checkDeviceExtensionSupport(VkPhysicalDevice device);
 		void populateDebugMessenger(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 		bool checkValidationLayerSupport();

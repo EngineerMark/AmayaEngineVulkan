@@ -1,9 +1,5 @@
 #pragma once
 #include <vulkan/vulkan.h>
-#include <vector>
-#include <iostream>
-#include "QueueFamilyIndices.h"
-#include "SwapChainSupportDetails.h"
 
 #define VK_USE_PLATFORM_WIN32_KHR
 #define GLFW_INCLUDE_VULKAN
@@ -16,14 +12,17 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <chrono>
-
 #include <cstdint>
 #include <algorithm>
 #include <set>
+#include <vector>
+#include <iostream>
 
 #include "AmayaFile.h"
 #include "Vertex.h"
 #include "UniformBufferObject.h"
+#include "QueueFamilyIndices.h"
+#include "SwapChainSupportDetails.h"
 
 class AmayaVulkan
 {
@@ -93,6 +92,10 @@ class AmayaVulkan
 		VkDeviceMemory indexBufferMemory;
 		VkDescriptorSetLayout descriptorSetLayout;
 		VkDescriptorPool descriptorPool;
+		VkBuffer stagingBuffer;
+		VkDeviceMemory stagingBufferMemory;
+		VkImage textureImage;
+		VkDeviceMemory textureImageMemory;
 
 		std::vector<VkImage> swapChainImages;
 		std::vector<VkImageView> swapChainImageViews;
@@ -144,10 +147,15 @@ class AmayaVulkan
 		void createUniformBuffers();
 		void createDescriptorPool();
 		void createDescriptorSets();
+		void createTextureImage();
 
+		void createImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
 		void updateUniformBuffer(uint32_t currentImage);
 		void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 		void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
+		void endSingleTimeCommands(VkCommandBuffer commandBuffer);
+		void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
+		void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
 
 		bool isDeviceSuitable(VkPhysicalDevice device);
 		uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
@@ -157,6 +165,7 @@ class AmayaVulkan
 		VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
 		VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 		VkShaderModule createShaderModule(const std::vector<char>& code);
+		VkCommandBuffer beginSingleTimeCommands();
 
 		bool checkDeviceExtensionSupport(VkPhysicalDevice device);
 		void populateDebugMessenger(VkDebugUtilsMessengerCreateInfoEXT& createInfo);

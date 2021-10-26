@@ -46,6 +46,11 @@ class AmayaVulkan
 		VkQueue graphicsQueue;
 		VkQueue presentQueue;
 		VkSurfaceKHR surface;
+		VkSwapchainKHR swapChain;
+		VkFormat swapChainImageFormat;
+		VkExtent2D swapChainExtent;
+
+		std::vector<VkImage> swapChainImages;
 
 		const std::vector<const char*> validationLayers = {
 			"VK_LAYER_KHRONOS_validation"
@@ -67,11 +72,12 @@ class AmayaVulkan
 		void createSurface();
 		void pickPhysicalDevice();
 		void createLogicalDevice();
+		void createSwapChain();
 		bool isDeviceSuitable(VkPhysicalDevice device);
 		SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
 		VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
 		VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
-		VkExtent2D chooseSwapExtend(const VkSurfaceCapabilitiesKHR& capabilities);
+		VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 		bool checkDeviceExtensionSupport(VkPhysicalDevice device);
 		void populateDebugMessenger(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 		bool checkValidationLayerSupport();

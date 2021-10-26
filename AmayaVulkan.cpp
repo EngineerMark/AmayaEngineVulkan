@@ -14,7 +14,6 @@ void AmayaVulkan::initialize(const uint32_t windowWidth, const uint32_t windowHe
 	initVulkan();
 }
 
-
 void AmayaVulkan::initWindow() {
 	glfwInit();
 
@@ -25,6 +24,10 @@ void AmayaVulkan::initWindow() {
 }
 
 void AmayaVulkan::cleanup() {
+	for (auto framebuffer : swapChainFramebuffers) {
+		vkDestroyFramebuffer(device, framebuffer, nullptr);
+	}
+
 	vkDestroyPipeline(device, graphicsPipeline, nullptr);
 	vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
 	vkDestroyRenderPass(device, renderPass, nullptr);
@@ -59,6 +62,7 @@ void AmayaVulkan::initVulkan() {
 	createImageViews();
 	createRenderPass();
 	createGraphicsPipeline();
+	createFramebuffers();
 }
 
 void AmayaVulkan::createInstance() {
@@ -135,8 +139,6 @@ void AmayaVulkan::createSurface() {
 	if (glfwCreateWindowSurface(instance, window, nullptr, &surface)) {
 		throw std::runtime_error("failed to create window surface");
 	}
-
-
 }
 
 void AmayaVulkan::pickPhysicalDevice() {
@@ -477,6 +479,30 @@ void AmayaVulkan::createRenderPass()
 
 	if (vkCreateRenderPass(device, &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create render pass");
+	}
+}
+
+void AmayaVulkan::createFramebuffers()
+{
+	swapChainFramebuffers.resize(swapChainImageViews.size());
+
+	for (size_t i = 0; i < swapChainImageViews.size(); i++) {
+		VkImageView attachments[] = {
+			swapChainImageViews[i]
+		};
+
+		VkFramebufferCreateInfo framebufferInfo{};
+		framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+		framebufferInfo.renderPass = renderPass;
+		framebufferInfo.attachmentCount = 1;
+		framebufferInfo.pAttachments = attachments;
+		framebufferInfo.width = swapChainExtent.width;
+		framebufferInfo.height = swapChainExtent.height;
+		framebufferInfo.layers = 1;
+
+		if (vkCreateFramebuffer(device, &framebufferInfo, nullptr, &swapChainFramebuffers[i]) != VK_SUCCESS) {
+			throw std::runtime_error("failed to create framebuffer");
+		}
 	}
 }
 

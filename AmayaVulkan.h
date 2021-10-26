@@ -22,6 +22,11 @@ class AmayaVulkan
 		void initialize(const uint32_t windowWidth, const uint32_t windowHeight, const char* engineName, const char* appName);
 		void initWindow();
 		void cleanup();
+		void drawFrame();
+
+		void waitIdle(){
+			vkDeviceWaitIdle(device);
+		}
 
 		bool validationLayersEnabled() {
 			return enableValidationLayers;
@@ -55,10 +60,14 @@ class AmayaVulkan
 		VkPipelineLayout pipelineLayout;
 		VkRenderPass renderPass;
 		VkPipeline graphicsPipeline;
+		VkCommandPool commandPool;
+		VkSemaphore imageAvailableSemaphore;
+		VkSemaphore renderFinishedSemaphore;
 
 		std::vector<VkImage> swapChainImages;
 		std::vector<VkImageView> swapChainImageViews;
 		std::vector<VkFramebuffer> swapChainFramebuffers;
+		std::vector<VkCommandBuffer> commandBuffers;
 
 		const std::vector<const char*> validationLayers = {
 			"VK_LAYER_KHRONOS_validation"
@@ -85,6 +94,9 @@ class AmayaVulkan
 		void createRenderPass();
 		void createGraphicsPipeline();
 		void createFramebuffers();
+		void createCommandPool();
+		void createCommandBuffers();
+		void createSemaphores();
 
 		bool isDeviceSuitable(VkPhysicalDevice device);
 

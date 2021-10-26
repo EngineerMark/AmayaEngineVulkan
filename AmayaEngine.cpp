@@ -11,7 +11,9 @@ void AmayaEngine::run() {
 void AmayaEngine::mainLoop() {
 	while (!glfwWindowShouldClose(graphicsEngine->GetWindow())) {
 		glfwPollEvents();
+		graphicsEngine->drawFrame();
 	}
+	graphicsEngine->waitIdle();
 }
 
 void AmayaEngine::cleanup() {

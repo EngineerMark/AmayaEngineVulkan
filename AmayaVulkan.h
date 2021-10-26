@@ -96,6 +96,8 @@ class AmayaVulkan
 		VkDeviceMemory stagingBufferMemory;
 		VkImage textureImage;
 		VkDeviceMemory textureImageMemory;
+		VkImageView textureImageView;
+		VkSampler textureSampler;
 
 		std::vector<VkImage> swapChainImages;
 		std::vector<VkImageView> swapChainImageViews;
@@ -148,6 +150,8 @@ class AmayaVulkan
 		void createDescriptorPool();
 		void createDescriptorSets();
 		void createTextureImage();
+		void createTextureImageView();
+		void createTextureSampler();
 
 		void createImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
 		void updateUniformBuffer(uint32_t currentImage);
@@ -166,6 +170,7 @@ class AmayaVulkan
 		VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 		VkShaderModule createShaderModule(const std::vector<char>& code);
 		VkCommandBuffer beginSingleTimeCommands();
+		VkImageView createImageView(VkImage image, VkFormat format);
 
 		bool checkDeviceExtensionSupport(VkPhysicalDevice device);
 		void populateDebugMessenger(VkDebugUtilsMessengerCreateInfoEXT& createInfo);

@@ -1,5 +1,4 @@
 #pragma once
-
 #include <vulkan/vulkan.h>
 #include <vector>
 #include <iostream>
@@ -12,9 +11,11 @@
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
 
+
 #include <cstdint>
 #include <algorithm>
 #include "AmayaFile.h"
+#include "Vertex.h"
 
 class AmayaVulkan
 {
@@ -44,6 +45,12 @@ class AmayaVulkan
 		char* ENGINE_NAME;
 		char* APP_NAME;
 
+		const std::vector<Vertex> vertices = {
+			{{0.0f, -0.5f}, {1.0f, 1.0f, 1.0f}},
+			{{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
+			{{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
+		};
+
 		uint32_t WIN_WIDTH = 800;
 		uint32_t WIN_HEIGHT = 600;
 
@@ -67,6 +74,8 @@ class AmayaVulkan
 		VkCommandPool commandPool;
 		VkSemaphore imageAvailableSemaphore;
 		VkSemaphore renderFinishedSemaphore;
+		VkBuffer vertexBuffer;
+		VkDeviceMemory vertexBufferMemory;
 
 		std::vector<VkImage> swapChainImages;
 		std::vector<VkImageView> swapChainImageViews;
@@ -109,8 +118,10 @@ class AmayaVulkan
 		void createSyncObjects();
 		void cleanupSwapChain();
 		void recreateSwapChain();
+		void createVertexBuffer();
 
 		bool isDeviceSuitable(VkPhysicalDevice device);
+		uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 
 		SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
 		VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);

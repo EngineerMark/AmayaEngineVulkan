@@ -19,6 +19,8 @@
 class AmayaVulkan
 {
 	public:
+		bool framebufferResized = false;
+
 		void initialize(const uint32_t windowWidth, const uint32_t windowHeight, const char* engineName, const char* appName);
 		void initWindow();
 		void cleanup();
@@ -37,6 +39,8 @@ class AmayaVulkan
 		}
 
 	private:
+		const int MAX_FRAMES_IN_FLIGHT = 2;
+
 		char* ENGINE_NAME;
 		char* APP_NAME;
 
@@ -68,6 +72,12 @@ class AmayaVulkan
 		std::vector<VkImageView> swapChainImageViews;
 		std::vector<VkFramebuffer> swapChainFramebuffers;
 		std::vector<VkCommandBuffer> commandBuffers;
+		std::vector<VkSemaphore> imageAvailableSemaphores;
+		std::vector<VkSemaphore> renderFinishedSemaphores;
+		std::vector<VkFence> inFlightFences;
+		std::vector<VkFence> imagesInFlight;
+
+		size_t currentFrame = 0;
 
 		const std::vector<const char*> validationLayers = {
 			"VK_LAYER_KHRONOS_validation"
@@ -96,7 +106,9 @@ class AmayaVulkan
 		void createFramebuffers();
 		void createCommandPool();
 		void createCommandBuffers();
-		void createSemaphores();
+		void createSyncObjects();
+		void cleanupSwapChain();
+		void recreateSwapChain();
 
 		bool isDeviceSuitable(VkPhysicalDevice device);
 

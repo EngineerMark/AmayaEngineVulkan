@@ -53,6 +53,8 @@ class AmayaVulkan
 		VkFormat swapChainImageFormat;
 		VkExtent2D swapChainExtent;
 		VkPipelineLayout pipelineLayout;
+		VkRenderPass renderPass;
+		VkPipelineLayout pipelineLayout;
 
 		std::vector<VkImage> swapChainImages;
 		std::vector<VkImageView> swapChainImageViews;
@@ -79,6 +81,7 @@ class AmayaVulkan
 		void createLogicalDevice();
 		void createSwapChain();
 		void createImageViews();
+		void createRenderPass();
 		void createGraphicsPipeline();
 		bool isDeviceSuitable(VkPhysicalDevice device);
 

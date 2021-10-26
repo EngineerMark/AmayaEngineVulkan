@@ -1,9 +1,6 @@
 #pragma once
 #include "AmayaVulkan.h"
 
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
-
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib>
@@ -21,14 +18,10 @@ private:
 	//glfw stuff
 	const uint32_t WIN_WIDTH = 800;
 	const uint32_t WIN_HEIGHT = 600;
-	GLFWwindow* window;
 
 	//vulkan stuff
 	AmayaVulkan* graphicsEngine;
 
-	void initWindow();
 	void mainLoop();
 	void cleanup();
-
-	std::vector<const char*> getRequiredExtensions();
 };

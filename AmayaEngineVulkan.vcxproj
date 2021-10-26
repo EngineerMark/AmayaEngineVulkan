@@ -163,6 +163,7 @@
     <ClInclude Include="AmayaEngine.h" />
     <ClInclude Include="AmayaVulkan.h" />
     <ClInclude Include="QueueFamilyIndices.h" />
+    <ClInclude Include="SwapChainSupportDetails.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

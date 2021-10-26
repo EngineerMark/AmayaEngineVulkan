@@ -119,6 +119,8 @@ class AmayaVulkan
 		void cleanupSwapChain();
 		void recreateSwapChain();
 		void createVertexBuffer();
+		void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
+		void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
 
 		bool isDeviceSuitable(VkPhysicalDevice device);
 		uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);

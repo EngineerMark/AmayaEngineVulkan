@@ -11,11 +11,19 @@
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
 
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include <chrono>
 
 #include <cstdint>
 #include <algorithm>
+#include <set>
+
 #include "AmayaFile.h"
 #include "Vertex.h"
+#include "UniformBufferObject.h"
 
 class AmayaVulkan
 {
@@ -83,6 +91,8 @@ class AmayaVulkan
 		VkDeviceMemory vertexBufferMemory;
 		VkBuffer indexBuffer;
 		VkDeviceMemory indexBufferMemory;
+		VkDescriptorSetLayout descriptorSetLayout;
+		VkDescriptorPool descriptorPool;
 
 		std::vector<VkImage> swapChainImages;
 		std::vector<VkImageView> swapChainImageViews;
@@ -92,6 +102,9 @@ class AmayaVulkan
 		std::vector<VkSemaphore> renderFinishedSemaphores;
 		std::vector<VkFence> inFlightFences;
 		std::vector<VkFence> imagesInFlight;
+		std::vector<VkBuffer> uniformBuffers;
+		std::vector<VkDeviceMemory> uniformBuffersMemory;
+		std::vector<VkDescriptorSet> descriptorSets;
 
 		size_t currentFrame = 0;
 
@@ -127,6 +140,12 @@ class AmayaVulkan
 		void recreateSwapChain();
 		void createVertexBuffer();
 		void createIndexBuffer();
+		void createDescriptorSetLayout();
+		void createUniformBuffers();
+		void createDescriptorPool();
+		void createDescriptorSets();
+
+		void updateUniformBuffer(uint32_t currentImage);
 		void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 		void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
 
